@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import time
 import os
+import re
 
 from lib.GlobalRRD import GlobalRRD
 from lib.NodeRRD import NodeRRD
@@ -35,8 +36,9 @@ class RRD(object):
 
         self.globalDb.update(len(online_nodes), client_count)
         for node_id, node in online_nodes.items():
-            rrd = NodeRRD(os.path.join(self.dbPath, node_id + '.rrd'), node)
-            rrd.update()
+            if not re.search(r'[^\w]', node_id):
+                rrd = NodeRRD(os.path.join(self.dbPath, node_id + '.rrd'), node)
+                rrd.update()
 
     def update_images(self):
         self.globalDb.graph(os.path.join(self.imagePath, "globalGraph.png"),
@@ -49,6 +51,6 @@ class RRD(object):
                 continue
 
             node_name = os.path.basename(file_name).split('.')
-            if node_name[1] == 'rrd' and not node_name[0] == "nodes":
+            if node_name[1] == 'rrd' and not node_name[0] == "nodes" and not re.search(r'[^\w]', node_name[0]):
                 rrd = NodeRRD(os.path.join(self.dbPath, file_name))
                 rrd.graph(self.imagePath, self.displayTimeNode)
