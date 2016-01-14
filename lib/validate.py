@@ -17,8 +17,8 @@ def validate_nodeinfo(nodeinfo):
             return False
 
     if 'node_id' in nodeinfo:
-        # Allow node_id from MAC without ":"
-        # Allow node_id like "gw1"
+        # If node_id contains characters where not a digit or simple letters then reject it
+        # This should allow node_id from MAC without ":" and node_id like "gw1"
         if re.search(r'[^a-zA-Z0-9]', nodeinfo['node_id']):
             return False
     else:
