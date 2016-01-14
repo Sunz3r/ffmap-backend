@@ -68,7 +68,8 @@ will prefix `sudo` where necessary.
                       'rootfs_usage': double, # 0..1
                       'loadavg': double,
                       'gateway': mac
-                    }
+                    },
+                    'node_id': node_id        # digits and simple letters (0-9, A-Z, a-z)
                  },
         ...
       }
